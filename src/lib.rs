@@ -37,17 +37,23 @@
 //!     let stealer2 = stealer.clone();
 //!     stealer2.steal();
 
+#![no_std]
+#![feature(alloc)]
+
+extern crate alloc;
+
 pub use self::Stolen::*;
 
-use std::sync::Arc;
-use std::mem::forget;
-use std::ptr;
-use std::marker::PhantomData;
-use std::cell::Cell;
-use std::fmt;
+use alloc::prelude::*;
+use alloc::sync::Arc;
+use core::mem::forget;
+use core::ptr;
+use core::marker::PhantomData;
+use core::cell::Cell;
+use core::fmt;
 
-use std::sync::atomic::{AtomicIsize, AtomicPtr, fence};
-use std::sync::atomic::Ordering::{SeqCst, Acquire, Release, Relaxed};
+use core::sync::atomic::{AtomicIsize, AtomicPtr, fence};
+use core::sync::atomic::Ordering::{SeqCst, Acquire, Release, Relaxed};
 
 // Initial size for a buffer.
 static MIN_SIZE: usize = 32;
@@ -338,7 +344,7 @@ impl<T: Send> Drop for Buffer<T> {
 }
 
 impl<T: Send> fmt::Debug for Deque<T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> fmt::Result {
         f.debug_struct("Deque")
             .field("bottom", &self.bottom)
             .field("top", &self.top)
@@ -348,7 +354,7 @@ impl<T: Send> fmt::Debug for Deque<T> {
 }
 
 impl<T: Send> fmt::Debug for Worker<T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> fmt::Result {
         f.debug_struct("Worker")
             .field("deque", &self.deque)
             .field("marker", &self.marker)
@@ -357,7 +363,7 @@ impl<T: Send> fmt::Debug for Worker<T> {
 }
 
 impl<T: Send> fmt::Debug for Stealer<T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> fmt::Result {
         f.debug_struct("Stealer")
             .field("deque", &self.deque)
             .finish()
