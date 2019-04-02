@@ -44,7 +44,8 @@ extern crate alloc;
 
 pub use self::Stolen::*;
 
-use alloc::prelude::*;
+use alloc::boxed::Box;
+use alloc::vec::Vec;
 use alloc::sync::Arc;
 use core::mem::forget;
 use core::ptr;
